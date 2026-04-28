@@ -20,7 +20,7 @@ agent:
 codex:
   command: codex --model gpt-5.5 -c model_provider=custom-gw --dangerously-bypass-approvals-and-sandbox --disable plugins app-server
   approval_policy: never
-  thread_sandbox: full-access
+  thread_sandbox: danger-full-access
   turn_timeout_ms: 900000
 ---
 
