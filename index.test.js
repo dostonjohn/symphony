@@ -69,6 +69,14 @@ test('site includes related real imagery with accessible descriptions', () => {
   assert.match(html, /alt="Glowing data center racks representing connected infrastructure"/);
 });
 
+test('image cards preserve consistent rounded corners while hovering', () => {
+  assert.match(html, /\.image-card\s*{[^}]*--image-card-radius:\s*28px;/s);
+  assert.match(html, /\.image-card\s*{[^}]*border-radius:\s*var\(--image-card-radius\);/s);
+  assert.match(html, /\.image-card\s*{[^}]*clip-path:\s*inset\(0 round var\(--image-card-radius\)\);/s);
+  assert.match(html, /\.image-card img\s*{[^}]*border-radius:\s*inherit;/s);
+  assert.match(html, /\.image-card::after\s*{[^}]*border-radius:\s*inherit;/s);
+});
+
 test('site includes progressive motion and interactivity enhancements', () => {
   assert.match(html, /data-reveal/);
   assert.match(html, /IntersectionObserver/);
