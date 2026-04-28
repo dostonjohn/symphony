@@ -4,4 +4,8 @@ function greet(name) {
   return `Hello, ${name}!`;
 }
 
-module.exports = { greet };
+function power(base, exponent) {
+  return Math.pow(base, exponent);
+}
+
+module.exports = { greet, power };
