@@ -22,8 +22,7 @@ codex:
   approval_policy: never
   thread_sandbox: danger-full-access
   turn_sandbox_policy:
-    type: fullAccess
-    networkAccess: true
+    type: dangerFullAccess
   turn_timeout_ms: 900000
 ---
 
