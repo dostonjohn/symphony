@@ -40,3 +40,12 @@ test('site includes related real imagery with accessible descriptions', () => {
   assert.match(html, /alt="Industrial robotic arm reaching through colored light"/);
   assert.match(html, /alt="Glowing data center racks representing connected infrastructure"/);
 });
+
+test('site includes progressive motion and interactivity enhancements', () => {
+  assert.match(html, /data-reveal/);
+  assert.match(html, /IntersectionObserver/);
+  assert.match(html, /prefers-reduced-motion: reduce/);
+  assert.match(html, /pointermove/);
+  assert.match(html, /--tilt-x/);
+  assert.match(html, /--magnet-x/);
+});

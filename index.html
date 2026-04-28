@@ -28,7 +28,15 @@
         box-sizing: border-box;
       }
 
+      html {
+        scroll-behavior: smooth;
+      }
+
       body {
+        --cursor-x: 50vw;
+        --cursor-y: 18vh;
+        --tilt-x: 0deg;
+        --tilt-y: 0deg;
         margin: 0;
         min-height: 100vh;
         color: var(--text);
@@ -38,6 +46,23 @@
           radial-gradient(circle at 50% 92%, rgba(100, 120, 255, 0.22), transparent 36rem),
           linear-gradient(135deg, #050611 0%, #0b1021 52%, #12091e 100%);
         overflow-x: hidden;
+      }
+
+      body::after {
+        content: "";
+        position: fixed;
+        left: var(--cursor-x);
+        top: var(--cursor-y);
+        z-index: -1;
+        width: 34rem;
+        height: 34rem;
+        border-radius: 50%;
+        background: radial-gradient(circle, rgba(72, 245, 255, 0.2), rgba(255, 79, 216, 0.08) 42%, transparent 68%);
+        filter: blur(12px);
+        opacity: 0.78;
+        transform: translate(-50%, -50%);
+        transition: opacity 220ms ease;
+        pointer-events: none;
       }
 
       body::before {
@@ -88,6 +113,7 @@
         border-radius: 14px;
         background: linear-gradient(135deg, rgba(72, 245, 255, 0.28), rgba(255, 79, 216, 0.24));
         box-shadow: 0 0 34px rgba(72, 245, 255, 0.22);
+        animation: brand-float 4.8s ease-in-out infinite;
       }
 
       .nav-links {
@@ -95,6 +121,35 @@
         gap: 22px;
         color: var(--muted);
         font-size: 0.95rem;
+      }
+
+      .nav-links a {
+        position: relative;
+        transition: color 180ms ease;
+      }
+
+      .nav-links a::after {
+        content: "";
+        position: absolute;
+        right: 0;
+        bottom: -7px;
+        left: 0;
+        height: 2px;
+        border-radius: 999px;
+        background: linear-gradient(90deg, var(--cyan), var(--pink));
+        transform: scaleX(0);
+        transform-origin: left;
+        transition: transform 200ms ease;
+      }
+
+      .nav-links a:hover,
+      .nav-links a.is-active {
+        color: var(--text);
+      }
+
+      .nav-links a:hover::after,
+      .nav-links a.is-active::after {
+        transform: scaleX(1);
       }
 
       .hero {
@@ -124,6 +179,7 @@
         border-radius: 50%;
         background: var(--green);
         box-shadow: 0 0 18px var(--green);
+        animation: pulse 1.8s ease-in-out infinite;
       }
 
       h1,
@@ -163,6 +219,8 @@
       }
 
       .button {
+        --magnet-x: 0px;
+        --magnet-y: 0px;
         display: inline-flex;
         align-items: center;
         justify-content: center;
@@ -171,11 +229,12 @@
         border: 1px solid rgba(255, 255, 255, 0.15);
         border-radius: 16px;
         font-weight: 750;
-        transition: transform 180ms ease, border-color 180ms ease, background 180ms ease;
+        transform: translate3d(var(--magnet-x), var(--magnet-y), 0);
+        transition: transform 180ms ease, border-color 180ms ease, background 180ms ease, box-shadow 180ms ease;
       }
 
       .button:hover {
-        transform: translateY(-2px);
+        transform: translate3d(var(--magnet-x), calc(var(--magnet-y) - 2px), 0);
         border-color: rgba(255, 255, 255, 0.32);
       }
 
@@ -183,6 +242,10 @@
         color: #08111b;
         background: linear-gradient(135deg, var(--cyan), var(--green));
         box-shadow: 0 20px 46px rgba(72, 245, 255, 0.18);
+      }
+
+      .button.primary:hover {
+        box-shadow: 0 24px 58px rgba(72, 245, 255, 0.3);
       }
 
       .button.secondary {
@@ -198,6 +261,13 @@
         background: linear-gradient(145deg, rgba(255, 255, 255, 0.13), rgba(255, 255, 255, 0.045));
         box-shadow: var(--shadow);
         overflow: hidden;
+        transform: perspective(1000px) rotateX(var(--tilt-y)) rotateY(var(--tilt-x));
+        transition: transform 220ms ease, border-color 220ms ease;
+        will-change: transform;
+      }
+
+      .orbital-card:hover {
+        border-color: rgba(72, 245, 255, 0.3);
       }
 
       .orbital-card::before {
@@ -235,11 +305,13 @@
         border: 1px solid rgba(72, 245, 255, 0.32);
         border-radius: 50%;
         box-shadow: inset 0 0 34px rgba(72, 245, 255, 0.08), 0 0 50px rgba(100, 120, 255, 0.18);
+        animation: breathe 5.4s ease-in-out infinite;
       }
 
       .ring:nth-child(2) {
         inset: 17%;
         border-color: rgba(255, 79, 216, 0.34);
+        animation-delay: -1.8s;
       }
 
       .core {
@@ -251,6 +323,7 @@
         border: 1px solid rgba(255, 255, 255, 0.22);
         font-size: 3rem;
         box-shadow: 0 0 58px rgba(72, 245, 255, 0.24);
+        animation: core-hover 3.8s ease-in-out infinite;
       }
 
       .arm {
@@ -261,6 +334,7 @@
         transform-origin: bottom center;
         border-radius: 999px;
         background: linear-gradient(var(--cyan), transparent);
+        animation: arm-scan 2.8s ease-in-out infinite;
       }
 
       .arm:nth-child(4) { transform: rotate(0deg); }
@@ -278,6 +352,7 @@
         background: rgba(255, 255, 255, 0.08);
         box-shadow: 0 16px 40px rgba(0, 0, 0, 0.28);
         backdrop-filter: blur(18px);
+        animation: note-drift 6s ease-in-out infinite;
       }
 
       .floating-note strong {
@@ -286,7 +361,7 @@
       }
 
       .note-one { top: 42px; left: 34px; }
-      .note-two { right: 28px; bottom: 64px; }
+      .note-two { right: 28px; bottom: 64px; animation-delay: -2.6s; }
 
       .section {
         padding: 92px 0;
@@ -309,6 +384,7 @@
         box-shadow: var(--shadow);
         isolation: isolate;
         overflow: hidden;
+        transition: transform 240ms ease, border-color 240ms ease, box-shadow 240ms ease;
       }
 
       .image-card:nth-child(2) {
@@ -322,6 +398,22 @@
         object-fit: cover;
         filter: saturate(1.16) contrast(1.08);
         transform: scale(1.02);
+        transition: transform 700ms ease, filter 240ms ease;
+      }
+
+      .image-card:hover {
+        border-color: rgba(72, 245, 255, 0.28);
+        box-shadow: 0 28px 84px rgba(0, 0, 0, 0.36);
+        transform: translateY(-8px);
+      }
+
+      .image-card:nth-child(2):hover {
+        transform: translateY(24px);
+      }
+
+      .image-card:hover img {
+        filter: saturate(1.35) contrast(1.12);
+        transform: scale(1.08);
       }
 
       .image-card::after {
@@ -386,6 +478,15 @@
 
       .card {
         padding: 28px;
+        transition: transform 220ms ease, border-color 220ms ease, background 220ms ease;
+      }
+
+      .card:hover,
+      .step:hover,
+      .stat:hover {
+        transform: translateY(-8px);
+        border-color: rgba(72, 245, 255, 0.28);
+        background: rgba(255, 255, 255, 0.105);
       }
 
       .icon {
@@ -397,6 +498,11 @@
         border-radius: 15px;
         background: var(--panel-strong);
         font-size: 1.4rem;
+        transition: transform 220ms ease;
+      }
+
+      .card:hover .icon {
+        transform: rotate(-8deg) scale(1.08);
       }
 
       .card h3,
@@ -416,6 +522,7 @@
         position: relative;
         padding: 26px;
         overflow: hidden;
+        transition: transform 220ms ease, border-color 220ms ease, background 220ms ease;
       }
 
       .step::before {
@@ -456,6 +563,7 @@
         border: 1px solid rgba(255, 255, 255, 0.1);
         border-radius: 22px;
         background: rgba(255, 255, 255, 0.06);
+        transition: transform 220ms ease, border-color 220ms ease, background 220ms ease;
       }
 
       .stat strong {
@@ -475,6 +583,18 @@
         color: #dce6ff;
         font-family: "SFMono-Regular", Consolas, "Liberation Mono", monospace;
         line-height: 1.8;
+      }
+
+      .terminal div {
+        opacity: 0.66;
+        transform: translateX(-8px);
+        transition: opacity 240ms ease, transform 240ms ease, color 240ms ease;
+      }
+
+      .terminal div.is-live {
+        opacity: 1;
+        color: #ffffff;
+        transform: translateX(0);
       }
 
       .terminal span {
@@ -505,8 +625,85 @@
         text-align: center;
       }
 
+      [data-reveal] {
+        opacity: 0;
+        transform: translateY(28px);
+        transition: opacity 620ms ease, transform 620ms ease;
+      }
+
+      [data-reveal].is-visible {
+        opacity: 1;
+        transform: translateY(0);
+      }
+
+      [data-reveal="group"] > * {
+        opacity: 0;
+        transform: translateY(24px);
+        transition: opacity 560ms ease, transform 560ms ease;
+      }
+
+      [data-reveal="group"].is-visible > * {
+        opacity: 1;
+        transform: translateY(0);
+      }
+
+      [data-reveal="group"].is-visible > *:nth-child(2) { transition-delay: 90ms; }
+      [data-reveal="group"].is-visible > *:nth-child(3) { transition-delay: 180ms; }
+      [data-reveal="group"].is-visible > *:nth-child(4) { transition-delay: 270ms; }
+
+      @keyframes brand-float {
+        0%, 100% { transform: translateY(0) rotate(0deg); }
+        50% { transform: translateY(-4px) rotate(5deg); }
+      }
+
+      @keyframes pulse {
+        0%, 100% { transform: scale(1); opacity: 1; }
+        50% { transform: scale(1.45); opacity: 0.58; }
+      }
+
+      @keyframes breathe {
+        0%, 100% { transform: scale(1); opacity: 0.82; }
+        50% { transform: scale(1.04); opacity: 1; }
+      }
+
+      @keyframes core-hover {
+        0%, 100% { transform: translateY(0) rotate(0deg); }
+        50% { transform: translateY(-10px) rotate(8deg); }
+      }
+
+      @keyframes arm-scan {
+        0%, 100% { opacity: 0.55; height: 112px; }
+        50% { opacity: 1; height: 132px; }
+      }
+
+      @keyframes note-drift {
+        0%, 100% { transform: translate3d(0, 0, 0); }
+        50% { transform: translate3d(0, -10px, 0); }
+      }
+
       @keyframes spin {
         to { transform: rotate(360deg); }
+      }
+
+      @media (prefers-reduced-motion: reduce) {
+        *,
+        *::before,
+        *::after {
+          animation-duration: 0.001ms !important;
+          animation-iteration-count: 1 !important;
+          scroll-behavior: auto !important;
+          transition-duration: 0.001ms !important;
+        }
+
+        body::after {
+          display: none;
+        }
+
+        [data-reveal],
+        [data-reveal="group"] > * {
+          opacity: 1;
+          transform: none;
+        }
       }
 
       @media (max-width: 900px) {
@@ -545,7 +742,7 @@
 
     <main id="top">
       <section class="shell hero" aria-labelledby="hero-title">
-        <div>
+        <div data-reveal>
           <div class="eyebrow"><span class="pulse"></span>Open-source autonomy for modern teams</div>
           <h1 id="hero-title">Meet <span class="gradient-text">OpenClaw</span>.</h1>
           <p class="hero-copy">
@@ -558,7 +755,7 @@
             <a class="button secondary" href="#what">Explore the idea</a>
           </div>
         </div>
-        <aside class="orbital-card" aria-label="OpenClaw workflow illustration">
+        <aside class="orbital-card" aria-label="OpenClaw workflow illustration" data-reveal>
           <div class="machine">
             <div class="claw" aria-hidden="true">
               <span class="ring"></span>
@@ -576,7 +773,7 @@
         </aside>
       </section>
 
-      <section class="shell image-strip" aria-label="OpenClaw in action imagery">
+      <section class="shell image-strip" aria-label="OpenClaw in action imagery" data-reveal="group">
         <figure class="image-card">
           <img
             src="https://images.unsplash.com/photo-1515879218367-8466d910aaa4?auto=format&amp;fit=crop&amp;w=1200&amp;q=82"
@@ -601,14 +798,14 @@
       </section>
 
       <section id="what" class="shell section" aria-labelledby="what-title">
-        <div class="section-title">
+        <div class="section-title" data-reveal>
           <h2 id="what-title">What is OpenClaw?</h2>
           <p>
             Think of OpenClaw as a friendly robotic claw for digital work: it reaches into your tool stack, picks up the
             right context, and moves a task from idea to outcome without hiding the process.
           </p>
         </div>
-        <div class="grid">
+        <div class="grid" data-reveal="group">
           <article class="card">
             <div class="icon">🧠</div>
             <h3>Agent brain</h3>
@@ -628,13 +825,13 @@
       </section>
 
       <section id="how" class="shell section" aria-labelledby="how-title">
-        <div class="section-title">
+        <div class="section-title" data-reveal>
           <h2 id="how-title">How does it work?</h2>
           <p>
             OpenClaw-style systems combine planning, retrieval, tool execution, and review loops into one smooth motion.
           </p>
         </div>
-        <div class="flow">
+        <div class="flow" data-reveal="group">
           <article class="step">
             <h3>Understand</h3>
             <p>Read the task, inspect context, and identify the real outcome the user needs.</p>
@@ -656,7 +853,7 @@
 
       <section id="why" class="shell section" aria-labelledby="why-title">
         <div class="split">
-          <div class="section-title">
+          <div class="section-title" data-reveal>
             <h2 id="why-title">Why it feels different.</h2>
             <p>
               Instead of another chatbot tab, OpenClaw behaves like an operating layer for work. It keeps the human in
@@ -667,7 +864,7 @@
               <div class="stat"><strong>4</strong>Core loops: context, plan, action, verification.</div>
             </div>
           </div>
-          <div class="terminal" aria-label="Example OpenClaw run log">
+          <div class="terminal" aria-label="Example OpenClaw run log" data-reveal>
             <div><span>openclaw</span> receive "Create a landing page"</div>
             <div>↳ scan repo structure and constraints</div>
             <div>↳ draft implementation plan</div>
@@ -679,7 +876,7 @@
       </section>
 
       <section class="shell" aria-labelledby="cta-title">
-        <div class="cta">
+        <div class="cta" data-reveal>
           <div>
             <h2 id="cta-title">Build with claws, not chaos.</h2>
             <p>
@@ -693,5 +890,91 @@
     </main>
 
     <footer class="shell">Designed as a single-page OpenClaw concept site.</footer>
+    <script>
+      (() => {
+        const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+        const revealTargets = document.querySelectorAll('[data-reveal]');
+        const navLinks = document.querySelectorAll('.nav-links a[href^="#"]');
+        const sections = [...navLinks]
+          .map((link) => document.querySelector(link.getAttribute('href')))
+          .filter(Boolean);
+
+        if ('IntersectionObserver' in window) {
+          const revealObserver = new IntersectionObserver((entries) => {
+            entries.forEach((entry) => {
+              if (entry.isIntersecting) {
+                entry.target.classList.add('is-visible');
+                revealObserver.unobserve(entry.target);
+              }
+            });
+          }, { threshold: 0.18 });
+
+          revealTargets.forEach((target) => revealObserver.observe(target));
+
+          const navObserver = new IntersectionObserver((entries) => {
+            entries.forEach((entry) => {
+              if (!entry.isIntersecting) return;
+              navLinks.forEach((link) => {
+                link.classList.toggle('is-active', link.getAttribute('href') === `#${entry.target.id}`);
+              });
+            });
+          }, { rootMargin: '-45% 0px -45% 0px' });
+
+          sections.forEach((section) => navObserver.observe(section));
+        } else {
+          revealTargets.forEach((target) => target.classList.add('is-visible'));
+        }
+
+        if (reduceMotion) return;
+
+        const orbitalCard = document.querySelector('.orbital-card');
+        const magneticButtons = document.querySelectorAll('.button');
+        const terminalLines = document.querySelectorAll('.terminal div');
+        let terminalIndex = 0;
+
+        window.addEventListener('pointermove', (event) => {
+          document.body.style.setProperty('--cursor-x', `${event.clientX}px`);
+          document.body.style.setProperty('--cursor-y', `${event.clientY}px`);
+        }, { passive: true });
+
+        orbitalCard?.addEventListener('pointermove', (event) => {
+          const rect = orbitalCard.getBoundingClientRect();
+          const x = ((event.clientX - rect.left) / rect.width - 0.5) * 12;
+          const y = ((event.clientY - rect.top) / rect.height - 0.5) * -12;
+          orbitalCard.style.setProperty('--tilt-x', `${x.toFixed(2)}deg`);
+          orbitalCard.style.setProperty('--tilt-y', `${y.toFixed(2)}deg`);
+        });
+
+        orbitalCard?.addEventListener('pointerleave', () => {
+          orbitalCard.style.setProperty('--tilt-x', '0deg');
+          orbitalCard.style.setProperty('--tilt-y', '0deg');
+        });
+
+        magneticButtons.forEach((button) => {
+          button.addEventListener('pointermove', (event) => {
+            const rect = button.getBoundingClientRect();
+            const x = (event.clientX - rect.left - rect.width / 2) * 0.16;
+            const y = (event.clientY - rect.top - rect.height / 2) * 0.22;
+            button.style.setProperty('--magnet-x', `${x.toFixed(1)}px`);
+            button.style.setProperty('--magnet-y', `${y.toFixed(1)}px`);
+          });
+
+          button.addEventListener('pointerleave', () => {
+            button.style.setProperty('--magnet-x', '0px');
+            button.style.setProperty('--magnet-y', '0px');
+          });
+        });
+
+        const cycleTerminal = () => {
+          terminalLines.forEach((line, index) => line.classList.toggle('is-live', index === terminalIndex));
+          terminalIndex = (terminalIndex + 1) % terminalLines.length;
+        };
+
+        if (terminalLines.length > 0) {
+          cycleTerminal();
+          window.setInterval(cycleTerminal, 1300);
+        }
+      })();
+    </script>
   </body>
 </html>
