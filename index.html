@@ -1,0 +1,614 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>OpenClaw — Autonomous AI for Real Work</title>
+    <meta
+      name="description"
+      content="A one-page introduction to OpenClaw: what it is, how it works, and why autonomous AI workflows matter."
+    />
+    <style>
+      :root {
+        color-scheme: dark;
+        --bg: #070913;
+        --panel: rgba(255, 255, 255, 0.08);
+        --panel-strong: rgba(255, 255, 255, 0.14);
+        --text: #f6f8ff;
+        --muted: #aab4d6;
+        --cyan: #48f5ff;
+        --blue: #6478ff;
+        --pink: #ff4fd8;
+        --green: #8affb5;
+        --shadow: 0 24px 80px rgba(0, 0, 0, 0.45);
+        font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+        min-height: 100vh;
+        color: var(--text);
+        background:
+          radial-gradient(circle at 15% 18%, rgba(72, 245, 255, 0.18), transparent 30rem),
+          radial-gradient(circle at 85% 12%, rgba(255, 79, 216, 0.18), transparent 28rem),
+          radial-gradient(circle at 50% 92%, rgba(100, 120, 255, 0.22), transparent 36rem),
+          linear-gradient(135deg, #050611 0%, #0b1021 52%, #12091e 100%);
+        overflow-x: hidden;
+      }
+
+      body::before {
+        content: "";
+        position: fixed;
+        inset: 0;
+        pointer-events: none;
+        opacity: 0.28;
+        background-image:
+          linear-gradient(rgba(255, 255, 255, 0.06) 1px, transparent 1px),
+          linear-gradient(90deg, rgba(255, 255, 255, 0.06) 1px, transparent 1px);
+        background-size: 58px 58px;
+        mask-image: linear-gradient(to bottom, black, transparent 82%);
+      }
+
+      a {
+        color: inherit;
+        text-decoration: none;
+      }
+
+      .shell {
+        position: relative;
+        width: min(1160px, calc(100% - 40px));
+        margin: 0 auto;
+      }
+
+      .nav {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 28px 0;
+      }
+
+      .brand {
+        display: inline-flex;
+        align-items: center;
+        gap: 12px;
+        font-weight: 800;
+        letter-spacing: -0.03em;
+      }
+
+      .brand-mark {
+        display: grid;
+        width: 42px;
+        height: 42px;
+        place-items: center;
+        border: 1px solid rgba(255, 255, 255, 0.16);
+        border-radius: 14px;
+        background: linear-gradient(135deg, rgba(72, 245, 255, 0.28), rgba(255, 79, 216, 0.24));
+        box-shadow: 0 0 34px rgba(72, 245, 255, 0.22);
+      }
+
+      .nav-links {
+        display: flex;
+        gap: 22px;
+        color: var(--muted);
+        font-size: 0.95rem;
+      }
+
+      .hero {
+        display: grid;
+        grid-template-columns: minmax(0, 1.05fr) minmax(340px, 0.95fr);
+        gap: 54px;
+        align-items: center;
+        padding: 72px 0 96px;
+      }
+
+      .eyebrow {
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
+        margin-bottom: 22px;
+        padding: 8px 12px;
+        border: 1px solid rgba(255, 255, 255, 0.12);
+        border-radius: 999px;
+        color: var(--muted);
+        background: rgba(255, 255, 255, 0.06);
+        backdrop-filter: blur(18px);
+      }
+
+      .pulse {
+        width: 9px;
+        height: 9px;
+        border-radius: 50%;
+        background: var(--green);
+        box-shadow: 0 0 18px var(--green);
+      }
+
+      h1,
+      h2,
+      h3,
+      p {
+        margin-top: 0;
+      }
+
+      h1 {
+        max-width: 780px;
+        margin-bottom: 22px;
+        font-size: clamp(3.3rem, 8vw, 7.4rem);
+        line-height: 0.88;
+        letter-spacing: -0.08em;
+      }
+
+      .gradient-text {
+        background: linear-gradient(100deg, var(--cyan), var(--blue) 48%, var(--pink));
+        -webkit-background-clip: text;
+        background-clip: text;
+        color: transparent;
+      }
+
+      .hero-copy {
+        max-width: 660px;
+        margin-bottom: 34px;
+        color: var(--muted);
+        font-size: clamp(1.05rem, 2vw, 1.28rem);
+        line-height: 1.7;
+      }
+
+      .actions {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 14px;
+      }
+
+      .button {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        min-height: 52px;
+        padding: 0 22px;
+        border: 1px solid rgba(255, 255, 255, 0.15);
+        border-radius: 16px;
+        font-weight: 750;
+        transition: transform 180ms ease, border-color 180ms ease, background 180ms ease;
+      }
+
+      .button:hover {
+        transform: translateY(-2px);
+        border-color: rgba(255, 255, 255, 0.32);
+      }
+
+      .button.primary {
+        color: #08111b;
+        background: linear-gradient(135deg, var(--cyan), var(--green));
+        box-shadow: 0 20px 46px rgba(72, 245, 255, 0.18);
+      }
+
+      .button.secondary {
+        color: var(--text);
+        background: rgba(255, 255, 255, 0.08);
+      }
+
+      .orbital-card {
+        position: relative;
+        min-height: 520px;
+        border: 1px solid rgba(255, 255, 255, 0.14);
+        border-radius: 34px;
+        background: linear-gradient(145deg, rgba(255, 255, 255, 0.13), rgba(255, 255, 255, 0.045));
+        box-shadow: var(--shadow);
+        overflow: hidden;
+      }
+
+      .orbital-card::before {
+        content: "";
+        position: absolute;
+        inset: -45%;
+        background: conic-gradient(from 140deg, transparent, rgba(72, 245, 255, 0.22), transparent, rgba(255, 79, 216, 0.22), transparent);
+        animation: spin 14s linear infinite;
+      }
+
+      .machine {
+        position: absolute;
+        inset: 18px;
+        display: grid;
+        place-items: center;
+        border-radius: 28px;
+        background: rgba(7, 9, 19, 0.78);
+        backdrop-filter: blur(28px);
+      }
+
+      .claw {
+        position: relative;
+        width: min(76%, 360px);
+        aspect-ratio: 1;
+      }
+
+      .claw .ring,
+      .claw .core,
+      .claw .arm {
+        position: absolute;
+      }
+
+      .ring {
+        inset: 5%;
+        border: 1px solid rgba(72, 245, 255, 0.32);
+        border-radius: 50%;
+        box-shadow: inset 0 0 34px rgba(72, 245, 255, 0.08), 0 0 50px rgba(100, 120, 255, 0.18);
+      }
+
+      .ring:nth-child(2) {
+        inset: 17%;
+        border-color: rgba(255, 79, 216, 0.34);
+      }
+
+      .core {
+        inset: 34%;
+        display: grid;
+        place-items: center;
+        border-radius: 28px;
+        background: linear-gradient(135deg, rgba(72, 245, 255, 0.2), rgba(255, 79, 216, 0.24));
+        border: 1px solid rgba(255, 255, 255, 0.22);
+        font-size: 3rem;
+        box-shadow: 0 0 58px rgba(72, 245, 255, 0.24);
+      }
+
+      .arm {
+        width: 4px;
+        height: 112px;
+        left: calc(50% - 2px);
+        top: 0;
+        transform-origin: bottom center;
+        border-radius: 999px;
+        background: linear-gradient(var(--cyan), transparent);
+      }
+
+      .arm:nth-child(4) { transform: rotate(0deg); }
+      .arm:nth-child(5) { transform: rotate(72deg); }
+      .arm:nth-child(6) { transform: rotate(144deg); }
+      .arm:nth-child(7) { transform: rotate(216deg); }
+      .arm:nth-child(8) { transform: rotate(288deg); }
+
+      .floating-note {
+        position: absolute;
+        padding: 14px 16px;
+        border: 1px solid rgba(255, 255, 255, 0.12);
+        border-radius: 18px;
+        color: var(--muted);
+        background: rgba(255, 255, 255, 0.08);
+        box-shadow: 0 16px 40px rgba(0, 0, 0, 0.28);
+        backdrop-filter: blur(18px);
+      }
+
+      .floating-note strong {
+        display: block;
+        color: var(--text);
+      }
+
+      .note-one { top: 42px; left: 34px; }
+      .note-two { right: 28px; bottom: 64px; }
+
+      .section {
+        padding: 92px 0;
+      }
+
+      .section-title {
+        max-width: 760px;
+        margin-bottom: 42px;
+      }
+
+      .section-title h2 {
+        margin-bottom: 14px;
+        font-size: clamp(2.1rem, 4vw, 4.4rem);
+        line-height: 1;
+        letter-spacing: -0.06em;
+      }
+
+      .section-title p,
+      .card p,
+      .step p {
+        color: var(--muted);
+        line-height: 1.65;
+      }
+
+      .grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 18px;
+      }
+
+      .card,
+      .step,
+      .cta {
+        border: 1px solid rgba(255, 255, 255, 0.12);
+        border-radius: 26px;
+        background: var(--panel);
+        box-shadow: 0 18px 60px rgba(0, 0, 0, 0.22);
+        backdrop-filter: blur(22px);
+      }
+
+      .card {
+        padding: 28px;
+      }
+
+      .icon {
+        display: grid;
+        width: 48px;
+        height: 48px;
+        margin-bottom: 22px;
+        place-items: center;
+        border-radius: 15px;
+        background: var(--panel-strong);
+        font-size: 1.4rem;
+      }
+
+      .card h3,
+      .step h3 {
+        margin-bottom: 10px;
+        font-size: 1.25rem;
+      }
+
+      .flow {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 16px;
+        counter-reset: flow;
+      }
+
+      .step {
+        position: relative;
+        padding: 26px;
+        overflow: hidden;
+      }
+
+      .step::before {
+        counter-increment: flow;
+        content: "0" counter(flow);
+        display: inline-flex;
+        margin-bottom: 36px;
+        color: var(--cyan);
+        font-weight: 850;
+        letter-spacing: 0.08em;
+      }
+
+      .step::after {
+        content: "";
+        position: absolute;
+        width: 100px;
+        height: 100px;
+        right: -36px;
+        top: -36px;
+        border-radius: 50%;
+        background: radial-gradient(circle, rgba(72, 245, 255, 0.2), transparent 70%);
+      }
+
+      .split {
+        display: grid;
+        grid-template-columns: 0.85fr 1.15fr;
+        gap: 30px;
+        align-items: stretch;
+      }
+
+      .stats {
+        display: grid;
+        gap: 16px;
+      }
+
+      .stat {
+        padding: 22px;
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        border-radius: 22px;
+        background: rgba(255, 255, 255, 0.06);
+      }
+
+      .stat strong {
+        display: block;
+        margin-bottom: 6px;
+        font-size: 2.1rem;
+        letter-spacing: -0.05em;
+      }
+
+      .terminal {
+        min-height: 100%;
+        padding: 26px;
+        border: 1px solid rgba(72, 245, 255, 0.16);
+        border-radius: 26px;
+        background: rgba(4, 7, 15, 0.78);
+        box-shadow: var(--shadow);
+        color: #dce6ff;
+        font-family: "SFMono-Regular", Consolas, "Liberation Mono", monospace;
+        line-height: 1.8;
+      }
+
+      .terminal span {
+        color: var(--green);
+      }
+
+      .cta {
+        display: grid;
+        grid-template-columns: 1fr auto;
+        gap: 24px;
+        align-items: center;
+        margin-bottom: 58px;
+        padding: clamp(28px, 6vw, 54px);
+        background:
+          linear-gradient(135deg, rgba(72, 245, 255, 0.14), rgba(255, 79, 216, 0.14)),
+          rgba(255, 255, 255, 0.07);
+      }
+
+      .cta h2 {
+        margin-bottom: 10px;
+        font-size: clamp(2rem, 4vw, 4rem);
+        letter-spacing: -0.06em;
+      }
+
+      footer {
+        padding: 34px 0 52px;
+        color: var(--muted);
+        text-align: center;
+      }
+
+      @keyframes spin {
+        to { transform: rotate(360deg); }
+      }
+
+      @media (max-width: 900px) {
+        .nav-links { display: none; }
+        .hero,
+        .split,
+        .cta { grid-template-columns: 1fr; }
+        .grid,
+        .flow { grid-template-columns: repeat(2, 1fr); }
+      }
+
+      @media (max-width: 620px) {
+        .shell { width: min(100% - 28px, 1160px); }
+        .hero { padding-top: 36px; }
+        .orbital-card { min-height: 440px; }
+        .grid,
+        .flow { grid-template-columns: 1fr; }
+        .floating-note { display: none; }
+      }
+    </style>
+  </head>
+  <body>
+    <header class="shell nav" aria-label="Primary navigation">
+      <a class="brand" href="#top" aria-label="OpenClaw home">
+        <span class="brand-mark">◈</span>
+        <span>OpenClaw</span>
+      </a>
+      <nav class="nav-links" aria-label="Page sections">
+        <a href="#what">What it is</a>
+        <a href="#how">How it works</a>
+        <a href="#why">Why it matters</a>
+      </nav>
+    </header>
+
+    <main id="top">
+      <section class="shell hero" aria-labelledby="hero-title">
+        <div>
+          <div class="eyebrow"><span class="pulse"></span>Open-source autonomy for modern teams</div>
+          <h1 id="hero-title">Meet <span class="gradient-text">OpenClaw</span>.</h1>
+          <p class="hero-copy">
+            OpenClaw is a concept for an open, agent-powered control layer that helps software teams turn goals into
+            planned, tool-using workflows. It listens, reasons, acts through connected tools, and reports back with a
+            clear trail of what changed.
+          </p>
+          <div class="actions">
+            <a class="button primary" href="#how">See how it works</a>
+            <a class="button secondary" href="#what">Explore the idea</a>
+          </div>
+        </div>
+        <aside class="orbital-card" aria-label="OpenClaw workflow illustration">
+          <div class="machine">
+            <div class="claw" aria-hidden="true">
+              <span class="ring"></span>
+              <span class="ring"></span>
+              <span class="core">⌬</span>
+              <span class="arm"></span>
+              <span class="arm"></span>
+              <span class="arm"></span>
+              <span class="arm"></span>
+              <span class="arm"></span>
+            </div>
+            <div class="floating-note note-one"><strong>Goal captured</strong>Human intent becomes a task graph.</div>
+            <div class="floating-note note-two"><strong>Tools connected</strong>Code, docs, tickets, and deploys.</div>
+          </div>
+        </aside>
+      </section>
+
+      <section id="what" class="shell section" aria-labelledby="what-title">
+        <div class="section-title">
+          <h2 id="what-title">What is OpenClaw?</h2>
+          <p>
+            Think of OpenClaw as a friendly robotic claw for digital work: it reaches into your tool stack, picks up the
+            right context, and moves a task from idea to outcome without hiding the process.
+          </p>
+        </div>
+        <div class="grid">
+          <article class="card">
+            <div class="icon">🧠</div>
+            <h3>Agent brain</h3>
+            <p>Breaks a request into steps, evaluates progress, and adapts when the environment changes.</p>
+          </article>
+          <article class="card">
+            <div class="icon">🔌</div>
+            <h3>Tool bridge</h3>
+            <p>Connects to repositories, issue trackers, documents, terminals, APIs, and delivery workflows.</p>
+          </article>
+          <article class="card">
+            <div class="icon">🔍</div>
+            <h3>Transparent trail</h3>
+            <p>Shows plans, decisions, changes, and verification so humans can trust and review the work.</p>
+          </article>
+        </div>
+      </section>
+
+      <section id="how" class="shell section" aria-labelledby="how-title">
+        <div class="section-title">
+          <h2 id="how-title">How does it work?</h2>
+          <p>
+            OpenClaw-style systems combine planning, retrieval, tool execution, and review loops into one smooth motion.
+          </p>
+        </div>
+        <div class="flow">
+          <article class="step">
+            <h3>Understand</h3>
+            <p>Read the task, inspect context, and identify the real outcome the user needs.</p>
+          </article>
+          <article class="step">
+            <h3>Plan</h3>
+            <p>Map the goal into small, reversible actions with checkpoints for validation.</p>
+          </article>
+          <article class="step">
+            <h3>Act</h3>
+            <p>Use connected tools to edit files, call APIs, update tickets, or prepare deployable output.</p>
+          </article>
+          <article class="step">
+            <h3>Verify</h3>
+            <p>Run checks, summarize results, and leave a clean handoff for human review.</p>
+          </article>
+        </div>
+      </section>
+
+      <section id="why" class="shell section" aria-labelledby="why-title">
+        <div class="split">
+          <div class="section-title">
+            <h2 id="why-title">Why it feels different.</h2>
+            <p>
+              Instead of another chatbot tab, OpenClaw behaves like an operating layer for work. It keeps the human in
+              charge while reducing the manual glue between ideas, code, coordination, and delivery.
+            </p>
+            <div class="stats" aria-label="OpenClaw benefits">
+              <div class="stat"><strong>1</strong>Unified place to plan, execute, and report.</div>
+              <div class="stat"><strong>4</strong>Core loops: context, plan, action, verification.</div>
+            </div>
+          </div>
+          <div class="terminal" aria-label="Example OpenClaw run log">
+            <div><span>openclaw</span> receive "Create a landing page"</div>
+            <div>↳ scan repo structure and constraints</div>
+            <div>↳ draft implementation plan</div>
+            <div>↳ generate polished interface</div>
+            <div>↳ run focused checks</div>
+            <div><span>done</span> handoff with changes, tests, and next steps</div>
+          </div>
+        </div>
+      </section>
+
+      <section class="shell" aria-labelledby="cta-title">
+        <div class="cta">
+          <div>
+            <h2 id="cta-title">Build with claws, not chaos.</h2>
+            <p>
+              Use OpenClaw as the mental model for AI that grabs the right context, coordinates tools, and completes the
+              loop with confidence.
+            </p>
+          </div>
+          <a class="button primary" href="#top">Back to top</a>
+        </div>
+      </section>
+    </main>
+
+    <footer class="shell">Designed as a single-page OpenClaw concept site.</footer>
+  </body>
+</html>

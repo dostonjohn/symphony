@@ -1,7 +1,11 @@
 const test = require('node:test');
 const assert = require('node:assert/strict');
+const fs = require('node:fs');
+const path = require('node:path');
 
 const { power } = require('./index');
+
+const html = fs.readFileSync(path.join(__dirname, 'index.html'), 'utf8');
 
 test('power raises base to exponent', () => {
   assert.equal(power(2, 3), 8);
@@ -13,4 +17,16 @@ test('power returns 1 for zero exponent', () => {
 
 test('power supports fractional exponents', () => {
   assert.equal(power(9, 0.5), 3);
+});
+
+test('site includes core OpenClaw content sections', () => {
+  assert.match(html, /What is OpenClaw\?/);
+  assert.match(html, /How does it work\?/);
+  assert.match(html, /Why it feels different\./);
+});
+
+test('site is a self-contained responsive page', () => {
+  assert.match(html, /<style>/);
+  assert.match(html, /@media \(max-width: 900px\)/);
+  assert.match(html, /<meta name="viewport"/);
 });
