@@ -7,6 +7,11 @@ const { power } = require('./index');
 
 const html = fs.readFileSync(path.join(__dirname, 'index.html'), 'utf8');
 
+const getAttributeValues = (attributeName) => {
+  const pattern = new RegExp(`${attributeName}="([^"]+)"`, 'g');
+  return [...html.matchAll(pattern)].map((match) => match[1]);
+};
+
 test('power raises base to exponent', () => {
   assert.equal(power(2, 3), 8);
 });
@@ -23,6 +28,29 @@ test('site includes core OpenClaw content sections', () => {
   assert.match(html, /What is OpenClaw\?/);
   assert.match(html, /How does it work\?/);
   assert.match(html, /Why it feels different\./);
+});
+
+test('site has a valid single-page document structure', () => {
+  assert.match(html, /^<!DOCTYPE html>/);
+  assert.equal((html.match(/<html\b/g) || []).length, 1);
+  assert.equal((html.match(/<head\b/g) || []).length, 1);
+  assert.equal((html.match(/<body\b/g) || []).length, 1);
+  assert.equal((html.match(/<main\b/g) || []).length, 1);
+  assert.equal((html.match(/<\/body>/g) || []).length, 1);
+  assert.equal((html.match(/<\/html>/g) || []).length, 1);
+  assert.doesNotMatch(html, /<(?:meta|img)\b[^>]*\/>/);
+});
+
+test('site navigation points to existing sections', () => {
+  const ids = new Set(getAttributeValues('id'));
+  const duplicateIds = getAttributeValues('id').filter((id, index, allIds) => allIds.indexOf(id) !== index);
+  const pageAnchors = getAttributeValues('href').filter((href) => href.startsWith('#'));
+
+  assert.deepEqual(duplicateIds, []);
+  assert.ok(pageAnchors.length >= 5);
+  pageAnchors.forEach((href) => {
+    assert.ok(ids.has(href.slice(1)), `${href} should point to an existing id`);
+  });
 });
 
 test('site is a self-contained responsive page', () => {
@@ -48,4 +76,9 @@ test('site includes progressive motion and interactivity enhancements', () => {
   assert.match(html, /pointermove/);
   assert.match(html, /--tilt-x/);
   assert.match(html, /--magnet-x/);
+});
+
+test('site labels non-semantic interactive regions with explicit roles', () => {
+  assert.match(html, /class="stats" role="group" aria-label="OpenClaw benefits"/);
+  assert.match(html, /class="terminal" role="group" aria-label="Example OpenClaw run log"/);
 });
