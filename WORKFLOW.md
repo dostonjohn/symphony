@@ -18,7 +18,7 @@ agent:
   max_concurrent_agents: 3
   max_turns: 15
 codex:
-  command: codex --model gpt-5.5 -c model_provider=custom-gw --dangerously-bypass-approvals-and-sandbox --disable plugins --disable tool_call_mcp_elicitation --disable apps app-server
+  command: codex --model gpt-5.5 -c model_provider=custom-gw -c model_reasoning_effort=high --dangerously-bypass-approvals-and-sandbox --disable plugins --disable tool_call_mcp_elicitation --disable apps app-server
   approval_policy: never
   thread_sandbox: danger-full-access
   turn_sandbox_policy:
