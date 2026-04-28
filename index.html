@@ -292,6 +292,63 @@
         padding: 92px 0;
       }
 
+      .image-strip {
+        display: grid;
+        grid-template-columns: 1.15fr 0.85fr 1fr;
+        gap: 18px;
+        margin: -34px auto 28px;
+      }
+
+      .image-card {
+        position: relative;
+        min-height: 280px;
+        margin: 0;
+        border: 1px solid rgba(255, 255, 255, 0.14);
+        border-radius: 28px;
+        background: rgba(255, 255, 255, 0.07);
+        box-shadow: var(--shadow);
+        isolation: isolate;
+        overflow: hidden;
+      }
+
+      .image-card:nth-child(2) {
+        transform: translateY(34px);
+      }
+
+      .image-card img {
+        width: 100%;
+        height: 100%;
+        min-height: inherit;
+        object-fit: cover;
+        filter: saturate(1.16) contrast(1.08);
+        transform: scale(1.02);
+      }
+
+      .image-card::after {
+        content: "";
+        position: absolute;
+        inset: 0;
+        z-index: 1;
+        background:
+          linear-gradient(180deg, transparent 30%, rgba(7, 9, 19, 0.78) 100%),
+          radial-gradient(circle at 25% 20%, rgba(72, 245, 255, 0.34), transparent 32%),
+          radial-gradient(circle at 80% 10%, rgba(255, 79, 216, 0.26), transparent 28%);
+        mix-blend-mode: screen;
+      }
+
+      .image-card figcaption {
+        position: absolute;
+        right: 18px;
+        bottom: 18px;
+        left: 18px;
+        z-index: 2;
+        color: var(--text);
+        font-size: 0.94rem;
+        font-weight: 750;
+        letter-spacing: -0.01em;
+        text-shadow: 0 2px 18px rgba(0, 0, 0, 0.62);
+      }
+
       .section-title {
         max-width: 760px;
         margin-bottom: 42px;
@@ -457,6 +514,8 @@
         .hero,
         .split,
         .cta { grid-template-columns: 1fr; }
+        .image-strip { grid-template-columns: 1fr; margin-top: 0; }
+        .image-card:nth-child(2) { transform: none; }
         .grid,
         .flow { grid-template-columns: repeat(2, 1fr); }
       }
@@ -515,6 +574,30 @@
             <div class="floating-note note-two"><strong>Tools connected</strong>Code, docs, tickets, and deploys.</div>
           </div>
         </aside>
+      </section>
+
+      <section class="shell image-strip" aria-label="OpenClaw in action imagery">
+        <figure class="image-card">
+          <img
+            src="https://images.unsplash.com/photo-1515879218367-8466d910aaa4?auto=format&amp;fit=crop&amp;w=1200&amp;q=82"
+            alt="Developer workspace with code on multiple monitors"
+          />
+          <figcaption>Live code context for autonomous software work.</figcaption>
+        </figure>
+        <figure class="image-card">
+          <img
+            src="https://images.unsplash.com/photo-1516192518150-0d8fee5425e3?auto=format&amp;fit=crop&amp;w=1000&amp;q=82"
+            alt="Industrial robotic arm reaching through colored light"
+          />
+          <figcaption>A robotic claw metaphor for precise tool action.</figcaption>
+        </figure>
+        <figure class="image-card">
+          <img
+            src="https://images.unsplash.com/photo-1558494949-ef010cbdcc31?auto=format&amp;fit=crop&amp;w=1100&amp;q=82"
+            alt="Glowing data center racks representing connected infrastructure"
+          />
+          <figcaption>Connected systems, infrastructure, and delivery loops.</figcaption>
+        </figure>
       </section>
 
       <section id="what" class="shell section" aria-labelledby="what-title">
