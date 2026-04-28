@@ -21,6 +21,9 @@ codex:
   command: codex --model gpt-5.5 -c model_provider=custom-gw --dangerously-bypass-approvals-and-sandbox --disable plugins --disable tool_call_mcp_elicitation --disable apps app-server
   approval_policy: never
   thread_sandbox: danger-full-access
+  turn_sandbox_policy:
+    type: fullAccess
+    networkAccess: true
   turn_timeout_ms: 900000
 ---
 
