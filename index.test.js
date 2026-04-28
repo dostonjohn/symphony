@@ -30,3 +30,13 @@ test('site is a self-contained responsive page', () => {
   assert.match(html, /@media \(max-width: 900px\)/);
   assert.match(html, /<meta name="viewport"/);
 });
+
+test('site includes related real imagery with accessible descriptions', () => {
+  const imageMatches = html.match(/<img\s/g) || [];
+
+  assert.equal(imageMatches.length, 3);
+  assert.match(html, /images\.unsplash\.com\/photo-/);
+  assert.match(html, /alt="Developer workspace with code on multiple monitors"/);
+  assert.match(html, /alt="Industrial robotic arm reaching through colored light"/);
+  assert.match(html, /alt="Glowing data center racks representing connected infrastructure"/);
+});
